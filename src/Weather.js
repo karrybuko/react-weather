@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import WeatherInfo from "./WeatherInfo";
 import "./Weather.css";
 import axios from "axios";
-import { scryRenderedComponentsWithType } from "react-dom/test-utils";
 
 export default function Weather(props) {
   const [weatherData, setWeatherData] = useState({ ready: false });
@@ -15,7 +14,7 @@ export default function Weather(props) {
       humidity: response.data.main.humidity,
       date: new Date(response.data.dt * 1000),
       description: response.data.weather[0].description,
-      iconUrl: "",
+      iconUrl: `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`,
       wind: response.data.wind.speed,
       city: response.data.name,
     });
@@ -67,11 +66,11 @@ export default function Weather(props) {
 
               <small>
                 <a
-                  href="https://github.com/karrybuko/vanilla-app"
+                  href="https://github.com/wecodeschool/react-weather-app"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Open-source code
+                  Open-source code{" "}
                 </a>
                 by Karyna Sokolovska
               </small>

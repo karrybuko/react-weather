@@ -20,10 +20,11 @@ export default function WeatherInfo(props) {
         <div className="col-6">
           <div className="clearfix weather-temperature">
             <img
-              src="https://cdn-icons-png.flaticon.com/512/869/869869.png"
+              src={props.data.iconUrl}
               alt="Clear"
               id="icon"
               class="float-left"
+              size="200px"
             />
             <div className="float-left">
               <strong id="temperature">

@@ -57,8 +57,9 @@ li:first-letter {
 
 .weather-temperature img {
   margin-right: 5px;
-  height: 64px;
-  width: 64px;
+  height: 80px;
+  width: 80px;
+  font-size: 60px;
 }
 
 .weather-temperature strong {
@@ -117,4 +118,7 @@ li:first-letter {
 }
 .btn:hover {
   background-color: #f37f58;
+}
+.icon {
+  font-size: 5em;
 }
