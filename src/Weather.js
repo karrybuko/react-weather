@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import FormattedDate from "./FormattedDate";
+
+import WeatherInfo from "./WeatherInfo";
 import "./Weather.css";
 import axios from "axios";
+import { scryRenderedComponentsWithType } from "react-dom/test-utils";
 
 export default function Weather(props) {
   const [weatherData, setWeatherData] = useState({ ready: false });
+  const [city, setCity] = useState(props.defaultCity);
   function handleResponse(response) {
     setWeatherData({
       ready: true,
@@ -17,13 +20,29 @@ export default function Weather(props) {
       city: response.data.name,
     });
   }
+
+  function search() {
+    let apiKey = "094780c710fa4efd669f0df8c3991927";
+    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    axios.get(apiUrl).then(handleResponse);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    search(city);
+  }
+
+  function handleCityChange(event) {
+    setCity(event.target.value);
+  }
+
   if (weatherData.ready) {
     return (
       <div className="Weather">
         <div className="container">
           <div className="weather-app-wrapper">
             <div className="weather-app">
-              <form id="search-form" className="mb-3">
+              <form id="search-form" className="mb-3" onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="col-9">
                     <input
@@ -32,6 +51,7 @@ export default function Weather(props) {
                       className="form-control"
                       id="city-input"
                       autocomplete="off"
+                      onChange={handleCityChange}
                     />
                   </div>
                   <div className="col-3">
@@ -43,68 +63,25 @@ export default function Weather(props) {
                   </div>
                 </div>
               </form>
-              <div className="overview">
-                <h1 id="city">{weatherData.city}</h1>
-                <ul>
-                  <li>
-                    Last updated:{" "}
-                    <span id="date">
-                      <FormattedDate date={weatherData.date} />
-                    </span>
-                  </li>
-                  <li id="description">{weatherData.description}</li>
-                </ul>
-              </div>
-              <div className="row">
-                <div className="col-6">
-                  <div className="clearfix weather-temperature">
-                    <img
-                      src="https://cdn-icons-png.flaticon.com/512/869/869869.png"
-                      alt="Clear"
-                      id="icon"
-                      class="float-left"
-                    />
-                    <div className="float-left">
-                      <strong id="temperature">
-                        {Math.round(weatherData.temperature)}
-                      </strong>
-                      <span className="units"> °C</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-6">
-                  <ul>
-                    <li>
-                      Humidity:{" "}
-                      <span id="humidity">{weatherData.humidity}</span>%
-                    </li>
-                    <li>
-                      Wind: <span id="wind">{weatherData.wind}</span> m/h
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div className="weather-forecast" id="forecast"></div>
-            </div>
+              <WeatherInfo data={weatherData} />
 
-            <small>
-              <a
-                href="https://github.com/karrybuko/vanilla-app"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Open-source code
-              </a>
-              by Karyna Sokolovska
-            </small>
+              <small>
+                <a
+                  href="https://github.com/karrybuko/vanilla-app"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Open-source code
+                </a>
+                by Karyna Sokolovska
+              </small>
+            </div>
           </div>
+          <script src="src/app.js"></script>
         </div>
-        <script src="src/app.js"></script>
       </div>
     );
   } else {
-    let apiKey = "094780c710fa4efd669f0df8c3991927";
-    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${props.defaultCity}&appid=${apiKey}&units=metric`;
-    axios.get(apiUrl).then(handleResponse);
+    search();
   }
 }
