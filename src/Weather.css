@@ -62,7 +62,7 @@ li:first-letter {
   font-size: 60px;
 }
 
-.weather-temperature strong {
+.temperature {
   color: rgb(255, 255, 255);
   font-size: 64px;
   line-height: 1;
